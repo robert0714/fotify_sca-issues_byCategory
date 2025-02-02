@@ -56,6 +56,19 @@ public class IssueByCategory {
 		}
 		return sbf.toString();
 	} 
+	public String getProportion() {
+		StringBuffer sbf = new StringBuffer() 
+				.append(System.lineSeparator() ) ;	
+		int total =  getAmount() ;
+		
+		Set<Entry<String, Integer>> unitEntrySet = this.reGroupingAcrossOneFile.entrySet();		 
+		for (Entry<String, Integer> unitEntry : unitEntrySet) {
+			Integer srcFileIssueCount = unitEntry.getValue();
+			sbf.append("%s".formatted(decorationV01(unitEntry.getKey())));
+			sbf.append(": %d / %d".formatted(srcFileIssueCount, total)).append(System.lineSeparator() ); 
+		}
+		return sbf.toString();
+	} 
 	private String decorationV01(String originString) {
 		return originString.replace("-DeveloperWorkbook.xml", "");
 	}

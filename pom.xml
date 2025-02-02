@@ -28,6 +28,13 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<file.encoding>UTF-8</file.encoding>
+		<javafx.version>21.0.6</javafx.version>
+        <javafx.plugin.version>0.0.8</javafx.plugin.version>
+        <main.class>com.example.utils.fotify_sca.issues_byCategory.javaFX.MyShapes</main.class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -38,6 +45,16 @@
 		    <groupId>com.fasterxml.jackson.dataformat</groupId>
 		    <artifactId>jackson-dataformat-xml</artifactId>		    
 		</dependency>
+		<dependency>
+		    <groupId>com.deepoove</groupId>
+		    <artifactId>poi-tl</artifactId>
+		    <version>1.12.2</version>
+		</dependency>
+		<dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
 		<dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -52,10 +69,27 @@
 
 	<build>
 		<plugins>
+		<!--
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			-->
+			<plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>${javafx.plugin.version}</version>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                    <stripDebug>true</stripDebug>
+			        <compress>2</compress>
+			        <noHeaderFiles>true</noHeaderFiles>
+			        <noManPages>true</noManPages>
+			        <launcher>hellofx</launcher>
+			        <jlinkImageName>hello</jlinkImageName>
+			        <jlinkZipName>hellozip</jlinkZipName>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
