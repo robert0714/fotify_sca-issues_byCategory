@@ -38,7 +38,7 @@
 		<attach.version>4.0.21</attach.version>
 		<connect.version>2.0.1</connect.version>
 		<gluonfx.target>host</gluonfx.target>
-		<main.class>com.example.utils.fotify_sca.issues_byCategory.javaFX.Main</main.class>
+		<main.class>com.example.utils.fotify_sca.issues_byCategory.javaFX.FileChooserSample</main.class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -112,11 +112,11 @@
 						<providedKeyAlias>${provided.key.alias}</providedKeyAlias>
 						<providedKeyAliasPassword>${provided.key.alias.password}</providedKeyAliasPassword>
 					</releaseConfiguration>
-					<!-- <bundlesList>
-                        <list>org.modernclients.Main</list>
-                    </bundlesList> -->
+					<bundlesList>
+<!--                        <list>${main.class}</list>-->
+                    </bundlesList>
 					<reflectionList>
-						<list>com.example.utils.fotify_sca.issues_byCategory.javaFX.Controller</list>
+						<list>${main.class}</list>
 					</reflectionList>
 				</configuration>
 			</plugin>
