@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.example.utils.fotify_sca.issues_byCategory.service.LogicProcessImpl;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,7 +27,8 @@ import javafx.stage.Stage;
 public final class FileChooserSample extends Application {
 
 //    private Desktop desktop = Desktop.getDesktop();
-    private final Map<String,String> map= new HashMap ();
+    private final Map<String,String> map = new HashMap<String,String>  ();
+    private LogicProcessImpl service = new LogicProcessImpl(); 
 
     @Override
     public void start(final Stage stage) {
@@ -57,6 +61,7 @@ public final class FileChooserSample extends Application {
                     public void handle(final ActionEvent e) {
                         String selected = map.get("selected");
                         System.out.println("你使用的是: %s".formatted(selected));
+                        service.process(new File(selected).toPath());                        
                     }
                 });
 
