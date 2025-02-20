@@ -82,41 +82,7 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-		    <plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<configuration>
-						    <mainClass>com.example.utils.fotify_sca.issues_byCategory.javaFX.Application</mainClass>
-			                <jvmArguments>-agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image/ --enable-preview
-			                    </jvmArguments>
-			            </configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.graalvm.buildtools</groupId>
-						<artifactId>native-maven-plugin</artifactId>
-						<configuration>
-							<buildArgs>
-								<buildArg>--enable-url-protocols=http</buildArg>
-								<buildArg>-march=compatibility</buildArg>
-							</buildArgs>
-						</configuration>
-						<executions>
-							<execution>
-								<goals>
-									<goal>build</goal>
-								</goals>
-								<phase>package</phase>
-							</execution>
-							<execution>
-								<id>test</id>
-								<goals>
-									<goal>test</goal>
-								</goals>
-								<phase>test</phase>
-							</execution>
-						</executions>
-					</plugin> 
+		<plugins>		    
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -234,6 +200,46 @@
 			<properties>
 				<gluonfx.target>linux-aarch64</gluonfx.target>
 			</properties>
+		</profile>
+		<profile>
+			<id>native</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+			                <jvmArguments>-agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image/ --enable-preview
+			                    </jvmArguments>
+			            </configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.graalvm.buildtools</groupId>
+						<artifactId>native-maven-plugin</artifactId>
+						<configuration>
+							<buildArgs>
+								<buildArg>--enable-url-protocols=http</buildArg>
+								<buildArg>-march=compatibility</buildArg>
+							</buildArgs>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>build</goal>
+								</goals>
+								<phase>package</phase>
+							</execution>
+							<execution>
+								<id>test</id>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<phase>test</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 </project>
