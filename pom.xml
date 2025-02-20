@@ -21,7 +21,7 @@
 		<tag/>
 		<url/>
 	</scm>
-	    <parent>
+	<parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.2</version>
@@ -44,6 +44,8 @@
 		<connect.version>2.0.1</connect.version>
 		<gluonfx.target>host</gluonfx.target>
 		<main.class>com.example.utils.fotify_sca.issues_byCategory.javaFX.FileChooserSample</main.class>
+		<!--<main.class>com.example.utils.fotify_sca.issues_byCategory.javaFX.ApplicationJFXSpringBoot</main.class> -->
+		
 	</properties>
 	<dependencies>
 	     <dependency>
@@ -78,11 +80,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
+		</dependency>   
 	</dependencies>
 
 	<build>
-		<plugins>		    
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -127,7 +129,7 @@
 						<providedKeyAliasPassword>${provided.key.alias.password}</providedKeyAliasPassword>
 					</releaseConfiguration>
 					<bundlesList>
-<!--                        <list>${main.class}</list>-->
+						<!--                        <list>${main.class}</list>-->
                     </bundlesList>
 					<reflectionList>
 						<list>${main.class}</list>
@@ -209,6 +211,7 @@
 						<groupId>org.springframework.boot</groupId>
 						<artifactId>spring-boot-maven-plugin</artifactId>
 						<configuration>
+						    <mainClass>${main.class}</mainClass>
 			                <jvmArguments>-agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image/ --enable-preview
 			                    </jvmArguments>
 			            </configuration>
@@ -216,11 +219,25 @@
 					<plugin>
 						<groupId>org.graalvm.buildtools</groupId>
 						<artifactId>native-maven-plugin</artifactId>
-						<configuration>
+						<configuration> 
+						    <skipNativeTests>true</skipNativeTests>
 							<buildArgs>
-								<buildArg>--enable-url-protocols=http</buildArg>
-								<buildArg>-march=compatibility</buildArg>
+								<buildArg>-march=compatibility</buildArg>								
+								<buildArg>--no-fallback</buildArg>
+								<buildArg>--add-modules=javafx.controls,javafx.fxml</buildArg>
+                                <buildArg>--report-unsupported-elements-at-runtime</buildArg>
+                                <buildArg>--initialize-at-run-time=com.sun.javafx.scene.layout.region.BorderImageSlices</buildArg>
+                                <buildArg>--initialize-at-run-time=javafx.scene.layout.Region,javafx.scene.control.Control,com.sun.javafx.scene.layout.region.BorderImageSlices</buildArg>
+                                <buildArg>--trace-object-instantiation=com.sun.javafx.scene.layout.region.BorderImageSlices</buildArg>
+                                <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                                <buildArg>-H:+ReportUnsupportedElementsAtRuntime</buildArg>
+                                <buildArg>-H:IncludeResources=.*\.fxml|.*\.properties|.*\.png</buildArg> 
+                                <buildArg>-Djava.awt.headless=true</buildArg> <!-- 讓編譯過程使用 headless 模式 -->
+                                <buildArg>-Dspring.aot.enabled=false</buildArg>                                
 							</buildArgs>
+							 <!-- 配置 native image 參數 -->
+					        <imageName>${project.artifactId}</imageName>
+					        <mainClass>${main.class}</mainClass>
 						</configuration>
 						<executions>
 							<execution>
@@ -240,6 +257,9 @@
 					</plugin>
 				</plugins>
 			</build>
+			<properties>
+				<gluonfx.target>host</gluonfx.target>
+			</properties>
 		</profile>
 	</profiles>
 </project>

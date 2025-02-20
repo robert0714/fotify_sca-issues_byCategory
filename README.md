@@ -8,6 +8,8 @@
 
 ```bash
 mvn clean javafx:run
+
+set native.image=1 && mvn clean package -DskipTests -Pnative -Dprism.order=sw native:compile
 ```
 
 ## Java FX and Spring Boot playground

@@ -39,6 +39,9 @@ public class NativeHintsConfiguration implements RuntimeHintsRegistrar {
                 MemberCategory.values());   
         hints.reflection().registerType(
         		SubSection.class,
-                MemberCategory.values());   
+                MemberCategory.values());  
+        hints.reflection().registerType(
+        		com.sun.javafx.scene.layout.region.BorderImageSlices.class,
+                MemberCategory.values());
     }
 }
