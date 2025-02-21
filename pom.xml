@@ -44,7 +44,6 @@
 		<connect.version>2.0.1</connect.version>
 		<gluonfx.target>host</gluonfx.target>
 		<main.class>com.example.utils.fotify_sca.issues_byCategory.javaFX.FileChooserSample</main.class>
-		<!--<main.class>com.example.utils.fotify_sca.issues_byCategory.javaFX.ApplicationJFXSpringBoot</main.class> -->
 		
 	</properties>
 	<dependencies>
@@ -204,9 +203,28 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>native</id>
+			<id>native</id> 
 			<build>
 				<plugins>
+				    <plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>3.4.0</version>
+						<executions>
+							<execution>
+								<id>add-source</id>
+								<phase>generate-sources</phase>
+								<goals>
+								    <goal>add-source</goal>
+								</goals>
+								<configuration>
+									<sources>
+										<source>src/native/java/</source>
+									</sources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin> 
 					<plugin>
 						<groupId>org.springframework.boot</groupId>
 						<artifactId>spring-boot-maven-plugin</artifactId>
@@ -222,22 +240,8 @@
 						<configuration> 
 						    <skipNativeTests>true</skipNativeTests>
 							<buildArgs>
-								<buildArg>-march=compatibility</buildArg>								
-								<buildArg>--no-fallback</buildArg>
-								<buildArg>--add-modules=javafx.controls,javafx.fxml</buildArg>
-                                <buildArg>--report-unsupported-elements-at-runtime</buildArg>
-                                <buildArg>--initialize-at-run-time=com.sun.javafx.scene.layout.region.BorderImageSlices</buildArg>
-                                <buildArg>--initialize-at-run-time=javafx.scene.layout.Region,javafx.scene.control.Control,com.sun.javafx.scene.layout.region.BorderImageSlices</buildArg>
-                                <buildArg>--trace-object-instantiation=com.sun.javafx.scene.layout.region.BorderImageSlices</buildArg>
-                                <buildArg>-H:+ReportExceptionStackTraces</buildArg>
-                                <buildArg>-H:+ReportUnsupportedElementsAtRuntime</buildArg>
-                                <buildArg>-H:IncludeResources=.*\.fxml|.*\.properties|.*\.png</buildArg> 
-                                <buildArg>-Djava.awt.headless=true</buildArg> <!-- 讓編譯過程使用 headless 模式 -->
-                                <buildArg>-Dspring.aot.enabled=false</buildArg>                                
+								<buildArg>-march=compatibility</buildArg>           
 							</buildArgs>
-							 <!-- 配置 native image 參數 -->
-					        <imageName>${project.artifactId}</imageName>
-					        <mainClass>${main.class}</mainClass>
 						</configuration>
 						<executions>
 							<execution>
@@ -259,6 +263,7 @@
 			</build>
 			<properties>
 				<gluonfx.target>host</gluonfx.target>
+				<main.class>com.example.utils.fotify_sca.issues_byCategory.javaFX.ApplicationJFXSpringBoot</main.class>
 			</properties>
 		</profile>
 	</profiles>

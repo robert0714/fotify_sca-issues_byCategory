@@ -330,3 +330,16 @@ mvn gluonfx:run
 ```
 
 Note that you can distribute this native application to any machine with the matching architecture (macOS, Linux, or Windows) and run it directly as any other regular application.
+
+# usage
+* Steps:
+```bash
+mvn clean javafx:run
+mvn clean compile spring-boot:process-aot -DskipTests -Pnative 
+# generate qualified `src\main\resources\META-INF\native-image` data
+# You have to run once scenario about operations in order to let aot to audit beahvior 
+mvn clean gluonfx:compile  # clean target data about profile is native exclude `src\main\resources\META-INF\native-image` data
+mvn gluonfx:link
+```
+Using `mvn gluonfx:nativerun ` to  check errors. 
+* Produce:`target\gluonfx\x86_64-windows` 
