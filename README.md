@@ -343,3 +343,4 @@ mvn gluonfx:link
 ```
 Using `mvn gluonfx:nativerun ` to  check errors. 
 * Produce:`target\gluonfx\x86_64-windows` 
+>> Using AMD CPU , after `mvn clean compile spring-boot:process-aot -DskipTests -Pnative ` , generated files (`jni-config.json` ,`reflect-config.json` ) maybee not right format to let `mvn clean gluonfx:compile` succefully .
