@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ReportDefinition type="standard">
+    <TemplateName>Fortify Developer Workbook</TemplateName>
+    <TemplatePath></TemplatePath>
+    <LogoPath>/OT_logo.png</LogoPath>
+    <Footnote>Copyright 2024 Open Text.</Footnote>
+    <UserName></UserName>
+    <ReportSection enabled="true" optionalSubsections="false">
+        <Title>Report Overview</Title>
+        <SubSection enabled="true">
+            <Title>Report Summary</Title>
+            <Description>This provides a high level summary of the findings that the analysis produced.  Also includes basic information on the scope of the scan.</Description>
+            <Text>On 2025年1月2日, a source code review was performed over the esg-platform-service code base. 174 files, 12,922 LOC (Executable) were scanned. A total of 19 issues were uncovered during the analysis.  This report provides a comprehensive description of all the types of issues found in this project.  Specific examples and source code are provided for each issue type.</Text>
+        </SubSection>
+        <SubSection enabled="true">
+            <Title>Issue Summary by Fortify Priority Order</Title>
+            <Description>A table summarizing the number of issues found and the breakdown of issues in each Fortify Priority Level</Description>
+            <IssueListing listing="false" limit="-1">
+                <Refinement></Refinement>
+                <Chart chartType="table">
+                    <Axis>Fortify Priority Order</Axis>
+                    <MajorAttribute>Analysis</MajorAttribute>
+                    <GroupingSection count="19">
+                        <groupTitle>Low</groupTitle>
+                    </GroupingSection>
+                </Chart>
+            </IssueListing>
+        </SubSection>
+    </ReportSection>
+    <ReportSection enabled="true" optionalSubsections="false">
+        <Title>Issue Summary</Title>
+        <SubSection enabled="true">
+            <Title>Overall number of results</Title>
+            <Description>Results count</Description>
+            <Text>The scan found 19 issues.</Text>
+        </SubSection>
+        <SubSection enabled="true">
+            <Title>Issues By Category</Title>
+            <IssueListing listing="false" limit="-1">
+                <Refinement></Refinement>
+                <Chart chartType="table">
+                    <Axis>Category</Axis>
+                    <MajorAttribute>Analysis</MajorAttribute>
+                    <GroupingSection count="7">
+                        <groupTitle>Password Management: Password in Comment</groupTitle>
+                    </GroupingSection>
+                    <GroupingSection count="3">
+                        <groupTitle>Poor Logging Practice: Use of a System Output Stream</groupTitle>
+                    </GroupingSection>
+                    <GroupingSection count="3">
+                        <groupTitle>System Information Leak</groupTitle>
+                    </GroupingSection>
+                    <GroupingSection count="3">
+                        <groupTitle>System Information Leak: Internal</groupTitle>
+                    </GroupingSection>
+                    <GroupingSection count="2">
+                        <groupTitle>J2EE Bad Practices: Threads</groupTitle>
+                    </GroupingSection>
+                    <GroupingSection count="1">
+                        <groupTitle>Build Misconfiguration: External Maven Dependency Repository</groupTitle>
+                    </GroupingSection>
+                </Chart>
+            </IssueListing>
+        </SubSection>
+    </ReportSection>
+    <ReportSection enabled="true" optionalSubsections="true">
+        <Title>Results Outline</Title>
+        <SubSection enabled="true">
+            <Title>Vulnerability Examples by Category</Title>
+            <Description>Results summary of all issue categories.  Vulnerability examples are provided by category.</Description>
+            <IssueListing listing="true" limit="5">
+                <Refinement></Refinement>
+                <Chart chartType="list">
+                    <Axis>Category</Axis>
+                    <MajorAttribute>Analysis</MajorAttribute>
+                    <GroupingSection count="7">
+                        <groupTitle>Password Management: Password in Comment</groupTitle>
+                        <MajorAttributeSummary>
+                            <MetaInfo>
+<Name>Abstract</Name>
+<Value>Storing passwords or password details in plain text anywhere in the system or system code might compromise system security in a way that is not easy to remedy.</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Explanation</Name>
+<Value>It is never a good idea to hardcode a password. Storing password details within comments is equivalent to hardcoding passwords. Not only is the password visible to the project's developers, it also makes fixing the problem extremely difficult. After the code is in production, the password is now leaked to the outside world and cannot be protected or changed without patching the software. If the account protected by the password is compromised, the owners of the system must choose between security and availability.
+
+
+Example 1: The following comment specifies the default password to connect to a database:
+
+
+...
+// Default username for database connection is "scott"
+// Default password for database connection is "tiger"
+...
+
+
+This code will run successfully, but anyone who has access to it will have access to the password. An employee with access to this information can use it to break into the system.
+</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Recommendations</Name>
+<Value>Passwords should never be hardcoded and should generally be obfuscated and managed in an external source. Storing passwords in plain text anywhere on the system allows anyone with sufficient permissions to read and potentially misuse the password.</Value>
+                            </MetaInfo>
+                            <AttributeValue>
+<Name>&lt;Unaudited&gt;</Name>
+<Count>7</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Not an Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Reliability Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Bad Practice</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Suspicious</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Exploitable</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                        </MajorAttributeSummary>
+                        <Issue iid="71CAD5240776C39A60DAD8B9C2C3282E" ruleID="720E3A66-55AC-4D2D-8DB9-DC30E120A52F">
+                            <Category>Password Management: Password in Comment</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Security Features</Kingdom>
+                            <Abstract>Storing passwords or password details in plain text anywhere in the system or system code might compromise system security in a way that is not easy to remedy.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>OAuthProperties.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/login/config/OAuthProperties.java</FilePath>
+<LineStart>25</LineStart>
+<Snippet>	private String clientId;
+	
+	/**
+	 * client secret
+	 */</Snippet>
+<TargetFunction>Comment()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                        <Issue iid="2FA43CF112F5A9B413C62FF44D5E01BB" ruleID="720E3A66-55AC-4D2D-8DB9-DC30E120A52F">
+                            <Category>Password Management: Password in Comment</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Security Features</Kingdom>
+                            <Abstract>Storing passwords or password details in plain text anywhere in the system or system code might compromise system security in a way that is not easy to remedy.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>TOTP.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/mfa/TOTP.java</FilePath>
+<LineStart>113</LineStart>
+<Snippet>
+
+    /**
+     * This method generates an TOTP value for the given
+     * set of parameters.</Snippet>
+<TargetFunction>Comment()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                        <Issue iid="2FA43CF112F5A9B413C62FF44D5E01BA" ruleID="720E3A66-55AC-4D2D-8DB9-DC30E120A52F">
+                            <Category>Password Management: Password in Comment</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Security Features</Kingdom>
+                            <Abstract>Storing passwords or password details in plain text anywhere in the system or system code might compromise system security in a way that is not easy to remedy.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>TOTP.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/mfa/TOTP.java</FilePath>
+<LineStart>94</LineStart>
+<Snippet>
+
+    /**
+     * This method generates an TOTP value for the given
+     * set of parameters.</Snippet>
+<TargetFunction>Comment()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                        <Issue iid="2FA43CF112F5A9B413C62FF44D5E01B9" ruleID="720E3A66-55AC-4D2D-8DB9-DC30E120A52F">
+                            <Category>Password Management: Password in Comment</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Security Features</Kingdom>
+                            <Abstract>Storing passwords or password details in plain text anywhere in the system or system code might compromise system security in a way that is not easy to remedy.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>TOTP.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/mfa/TOTP.java</FilePath>
+<LineStart>75</LineStart>
+<Snippet>
+
+    /**
+     * This method generates an TOTP value for the given
+     * set of parameters.</Snippet>
+<TargetFunction>Comment()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                        <Issue iid="F1B10C7C93EBA2E69A430794A5BCEA50" ruleID="720E3A66-55AC-4D2D-8DB9-DC30E120A52F">
+                            <Category>Password Management: Password in Comment</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Security Features</Kingdom>
+                            <Abstract>Storing passwords or password details in plain text anywhere in the system or system code might compromise system security in a way that is not easy to remedy.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>TOTP.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/mfa/TOTP.java</FilePath>
+<LineStart>132</LineStart>
+<Snippet>
+
+    /**
+     * This method generates an TOTP value for the given
+     * set of parameters.</Snippet>
+<TargetFunction>Comment()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                    </GroupingSection>
+                    <GroupingSection count="3">
+                        <groupTitle>Poor Logging Practice: Use of a System Output Stream</groupTitle>
+                        <MajorAttributeSummary>
+                            <MetaInfo>
+<Name>Abstract</Name>
+<Value>Using println() rather than a dedicated logging facility makes it difficult to monitor the program behavior.</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Explanation</Name>
+<Value>Example 1: The first Java program that a developer learns to write is the following:
+
+
+public class MyClass
+  ...
+    System.out.println("hello world");
+  ...
+}
+
+
+While most programmers go on to learn many nuances and subtleties about Java, a surprising number hang on to this first lesson and never give up on writing messages to standard output using System.out.println().
+
+The problem is that writing directly to standard output or standard error is often used as an unstructured form of logging. Structured logging facilities provide features like logging levels, uniform formatting, a logger identifier, timestamps, and, perhaps most critically, the ability to direct the log messages to the right place. When the use of system output streams is jumbled together with the code that uses loggers properly, the result is often a well-kept log that is missing critical information.
+
+Developers widely accept the need for structured logging, but many continue to use system output streams in their "pre-production" development. If the code you are reviewing is past the initial phases of development, use of System.out or System.err may indicate an oversight in the move to a structured logging system.
+</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Recommendations</Name>
+<Value>Use a Java logging facility rather than System.out or System.err.
+
+Example 2: For example, you can rewrite the "hello world" program in Example 1 using log4j as follows:
+
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.BasicConfigurator;
+
+public class MyClass {
+  private final static Logger logger =
+            Logger.getLogger(MyClass.class);
+
+  ...
+    BasicConfigurator.configure();
+    logger.info("hello world");
+  ...
+}
+
+</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Tips</Name>
+<Value>1. Fortify Static Code Analyzer makes an exception for using System.out or System.err in main() and methods in the call hierarchy of main() and does not report such occurrences as Poor Logging Practice: Use of a System Output Stream issues.</Value>
+                            </MetaInfo>
+                            <AttributeValue>
+<Name>&lt;Unaudited&gt;</Name>
+<Count>3</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Not an Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Reliability Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Bad Practice</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Suspicious</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Exploitable</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                        </MajorAttributeSummary>
+                        <Issue iid="4EB759D81FA6A44193BF4E696E1ADBA9" ruleID="F972FE42-6C15-47D2-BD5C-448166A574C2">
+                            <Category>Poor Logging Practice: Use of a System Output Stream</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Encapsulation</Kingdom>
+                            <Abstract>Using println() rather than a dedicated logging facility makes it difficult to monitor the program behavior.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>RecordVersionTasklet.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/batch/RecordVersionTasklet.java</FilePath>
+<LineStart>40</LineStart>
+<Snippet>			.getJobParameters();
+		String fileName = (String) ps.get("filename");
+		System.out.println("----------------------------------------------------------------------------");
+		log.info("name: {}", fileName);
+		log.info("respository: {}", respository);</Snippet>
+<TargetFunction>FunctionCall: println()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                        <Issue iid="72C4C09676234027B0E5AD1674F78F6E" ruleID="F972FE42-6C15-47D2-BD5C-448166A574C2">
+                            <Category>Poor Logging Practice: Use of a System Output Stream</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Encapsulation</Kingdom>
+                            <Abstract>Using println() rather than a dedicated logging facility makes it difficult to monitor the program behavior.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>GoogleAuthenticatorUtil.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/mfa/GoogleAuthenticatorUtil.java</FilePath>
+<LineStart>147</LineStart>
+<Snippet>        try (FileOutputStream out = new FileOutputStream(filePath)) {
+            BitMatrix matrix = new MultiFormatWriter().encode(barCodeData, BarcodeFormat.QR_CODE, width, height);
+            System.out.println(filePath);
+            MatrixToImageWriter.writeToStream(matrix, "png", out);
+        } catch (WriterException | IOException e) {</Snippet>
+<TargetFunction>FunctionCall: println()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                        <Issue iid="4EB759D81FA6A44193BF4E696E1ADBAA" ruleID="F972FE42-6C15-47D2-BD5C-448166A574C2">
+                            <Category>Poor Logging Practice: Use of a System Output Stream</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Encapsulation</Kingdom>
+                            <Abstract>Using println() rather than a dedicated logging facility makes it difficult to monitor the program behavior.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>RecordVersionTasklet.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/batch/RecordVersionTasklet.java</FilePath>
+<LineStart>44</LineStart>
+<Snippet>		log.info("respository: {}", respository);
+		log.info("jdbcTemplate: {}", jdbcTemplate);
+		System.out.println("----------------------------------------------------------------------------");
+		UUID uuid = UUID.randomUUID() ;
+		 </Snippet>
+<TargetFunction>FunctionCall: println()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                    </GroupingSection>
+                    <GroupingSection count="3">
+                        <groupTitle>System Information Leak</groupTitle>
+                        <MajorAttributeSummary>
+                            <MetaInfo>
+<Name>Abstract</Name>
+<Value>The function handleLog() in LogAspect.java reveals system data or debug information by calling printStackTrace() on line 82. The information revealed by printStackTrace() could help an adversary form a plan of attack.</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Explanation</Name>
+<Value>An information leak occurs when system data or debug information leaves the program through an output stream or logging function.
+
+
+
+Example 1: The following code writes an exception to the standard error stream:
+
+
+try {
+    ...
+} catch (Exception e) {
+    e.printStackTrace();
+}
+
+
+Depending on the system configuration, this information can be dumped to a console, written to a log file, or exposed to a remote user. For example, with scripting mechanisms it is trivial to redirect output information from "Standard error" or "Standard output" into a file or another program. Alternatively, the system that the program runs on could have a remote logging mechanism such as a "syslog" server that sends the logs to a remote device. During development, you have no way of knowing where this information might end up being displayed.
+
+In some cases, the error message provides the attacker with the precise type of attack to which the system is vulnerable. For example, a database error message can reveal that the application is vulnerable to a SQL injection attack. Other error messages can reveal more oblique clues about the system. In Example 1, the leaked information could imply information about the type of operating system, the applications installed on the system, and the amount of care that the administrators have put into configuring the program.
+
+Here is another scenario, specific to the mobile world. Most mobile devices now implement a Near-Field Communication (NFC) protocol for quickly sharing information between devices using radio communication. It works by bringing devices to close proximity or simply having them touch each other. Even though the communication range of NFC is limited to just a few centimeters, eavesdropping, data modification and various other types of attacks are possible, since NFC alone does not ensure secure communication.
+
+Example 2: The Android platform provides support for NFC. The following code creates a message that gets pushed to the other device within the range.
+
+...
+public static final String TAG = "NfcActivity";
+private static final String DATA_SPLITTER = "__:DATA:__";
+private static final String MIME_TYPE = "application/my.applications.mimetype";
+...
+public NdefMessage createNdefMessage(NfcEvent event) {
+    TelephonyManager tm = (TelephonyManager)Context.getSystemService(Context.TELEPHONY_SERVICE);
+    String VERSION = tm.getDeviceSoftwareVersion();
+    String text = TAG + DATA_SPLITTER + VERSION;
+    NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
+            MIME_TYPE.getBytes(), new byte[0], text.getBytes());
+    NdefRecord[] records = { record };
+    NdefMessage msg = new NdefMessage(records);
+    return msg;
+}
+...
+
+
+NFC Data Exchange Format (NDEF) message contains typed data, a URI, or a custom application payload. If the message contains information about the application, such as its name, MIME type, or device software version, this information could be leaked to an eavesdropper. In Example 2, Fortify Static Code Analyzer reports a System Information Leak vulnerability on the return statement.
+</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Recommendations</Name>
+<Value>Write error messages with security in mind. In production environments, turn off detailed error information in favor of brief messages. Restrict the generation and storage of detailed output that can help administrators and programmers diagnose problems. Debug traces can sometimes appear in non-obvious places (embedded in comments in the HTML for an error page, for example).
+
+Even brief error messages that do not reveal stack traces or database dumps can potentially aid an attacker. For example, an "Access Denied" message can reveal that a file or user exists on the system.
+
+If you are concerned about leaking system data via NFC on an Android device, you could do one of the following three things. Do not include system data in the messages pushed to other devices in range, encrypt the payload of the message, or establish a secure communication channel at a higher layer.
+</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Tips</Name>
+<Value>1. Do not rely on wrapper scripts, corporate IT policy, or quick-thinking system administrators to prevent system information leaks. Write software that is secure on its own.
+
+2. This category of vulnerability does not apply to all types of programs. For example, if your application executes on a client machine where system information is already available to an attacker, or if you print system information only to a trusted log file, you can use Audit Guide to filter out this category from your scan results.</Value>
+                            </MetaInfo>
+                            <AttributeValue>
+<Name>&lt;Unaudited&gt;</Name>
+<Count>3</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Not an Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Reliability Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Bad Practice</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Suspicious</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Exploitable</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                        </MajorAttributeSummary>
+                        <Issue iid="F7DCFAF521608EE0566A963E17E0883E" ruleID="FE4EADF2-7055-4C36-863E-5A01C4A0E1A4">
+                            <Category>System Information Leak</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Encapsulation</Kingdom>
+                            <Abstract>The function handleLog() in LogAspect.java reveals system data or debug information by calling printStackTrace() on line 82. The information revealed by printStackTrace() could help an adversary form a plan of attack.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>LogAspect.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/aop/LogAspect.java</FilePath>
+<LineStart>82</LineStart>
+<Snippet>        } catch (Exception exp) {
+            log.error("Handle API Log error : {}", exp.getMessage());
+            exp.printStackTrace();
+        } finally {
+            TIME_THREADLOCAL.remove();</Snippet>
+<TargetFunction>printStackTrace()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                        <Issue iid="873C0436B108763808E6EB898F0AF2AA" ruleID="FE4EADF2-7055-4C36-863E-5A01C4A0E1A4">
+                            <Category>System Information Leak</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Encapsulation</Kingdom>
+                            <Abstract>The function renderString() in ServletUtils.java reveals system data or debug information by calling printStackTrace() on line 119. The information revealed by printStackTrace() could help an adversary form a plan of attack.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>ServletUtils.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/utils/ServletUtils.java</FilePath>
+<LineStart>119</LineStart>
+<Snippet>            response.getWriter().print(string);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }</Snippet>
+<TargetFunction>printStackTrace()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                        <Issue iid="B04ED507B98484B6EF594D21654166BF" ruleID="FE4EADF2-7055-4C36-863E-5A01C4A0E1A4">
+                            <Category>System Information Leak</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Encapsulation</Kingdom>
+                            <Abstract>The function handleValidationExceptions() in ExceptionTranslator.java reveals system data or debug information by calling printStackTrace() on line 34. The information revealed by printStackTrace() could help an adversary form a plan of attack.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>ExceptionTranslator.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/login/ExceptionTranslator.java</FilePath>
+<LineStart>34</LineStart>
+<Snippet>	public @ResponseBody ResponseEntity&lt;HttpErrorInfo&gt; handleValidationExceptions(final WebRequest request,
+			Exception ex) {
+		ex.printStackTrace();
+		if (ex instanceof HttpClientErrorException) {
+			HttpClientErrorException ex1 = (HttpClientErrorException) ex;</Snippet>
+<TargetFunction>printStackTrace()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                    </GroupingSection>
+                    <GroupingSection count="3">
+                        <groupTitle>System Information Leak: Internal</groupTitle>
+                        <MajorAttributeSummary>
+                            <MetaInfo>
+<Name>Abstract</Name>
+<Value>The function createQRCode() in GoogleAuthenticatorUtil.java reveals system data or debug information by calling error() on line 150. The information revealed by error() could help an adversary form a plan of attack.</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Explanation</Name>
+<Value>An internal information leak occurs when system data or debug information is sent to a local file, console, or screen via printing or logging.
+
+
+
+Example 1: The following code writes an exception to the standard error stream:
+
+
+try {
+    ...
+} catch (Exception e) {
+    e.printStackTrace();
+}
+
+
+Depending on the system configuration, this information can be dumped to a console, written to a log file, or exposed to a user. In some cases, the error message provides the attacker with the precise type of attack to which the system is vulnerable. For example, a database error message can reveal that the application is vulnerable to a SQL injection attack. Other error messages can reveal more oblique clues about the system. In Example 1, the leaked information could imply information about the type of operating system, the applications installed on the system, and the amount of care that the administrators have put into configuring the program.
+
+Information leaks are also a concern in a mobile computing environment.
+
+Example 2: The following code logs the stack trace of a caught exception on the Android platform.
+
+...
+try {
+  ...
+} catch (Exception e) {
+    Log.e(TAG, Log.getStackTraceString(e));
+}
+...
+
+
+</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Recommendations</Name>
+<Value>Write error messages with security in mind. In production environments, turn off detailed error information in favor of brief messages. Restrict the generation and storage of detailed output that can help administrators and programmers diagnose problems. Debug traces can sometimes appear in non-obvious places (embedded in comments in the HTML for an error page, for example).
+
+Even brief error messages that do not reveal stack traces or database dumps can potentially aid an attacker. For example, an "Access Denied" message can reveal that a file or user exists on the system.
+</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Tips</Name>
+<Value>1. Do not rely on wrapper scripts, corporate IT policy, or quick-thinking system administrators to prevent system information leaks. Write software that is secure on its own.
+
+2. This category of vulnerability does not apply to all types of programs. For example, if your application executes on a client machine where system information is already available to an attacker, or if you print system information only to a trusted log file, you can use Audit Guide to filter out this category from your scan results.</Value>
+                            </MetaInfo>
+                            <AttributeValue>
+<Name>&lt;Unaudited&gt;</Name>
+<Count>3</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Not an Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Reliability Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Bad Practice</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Suspicious</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Exploitable</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                        </MajorAttributeSummary>
+                        <Issue iid="56B7574FA7272D07AA30333B31E30DD7" ruleID="B227CB65-6F20-4472-BBB7-13E157F32F6E">
+                            <Category>System Information Leak: Internal</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Encapsulation</Kingdom>
+                            <Abstract>The function createQRCode() in GoogleAuthenticatorUtil.java reveals system data or debug information by calling error() on line 150. The information revealed by error() could help an adversary form a plan of attack.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>GoogleAuthenticatorUtil.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/mfa/GoogleAuthenticatorUtil.java</FilePath>
+<LineStart>150</LineStart>
+<Snippet>            MatrixToImageWriter.writeToStream(matrix, "png", out);
+        } catch (WriterException | IOException e) {
+            log.error(e.getMessage(), e);
+        }
+    }</Snippet>
+<TargetFunction>org.slf4j.Logger.error()</TargetFunction>
+                            </Primary>
+                            <Source>
+<FileName>GoogleAuthenticatorUtil.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/mfa/GoogleAuthenticatorUtil.java</FilePath>
+<LineStart>150</LineStart>
+<Snippet>            MatrixToImageWriter.writeToStream(matrix, "png", out);
+        } catch (WriterException | IOException e) {
+            log.error(e.getMessage(), e);
+        }
+    }</Snippet>
+<TargetFunction>Read e()</TargetFunction>
+                            </Source>
+                        </Issue>
+                        <Issue iid="40A83ECED71CFB23BC8E2FB6C23997BA" ruleID="B227CB65-6F20-4472-BBB7-13E157F32F6E">
+                            <Category>System Information Leak: Internal</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Encapsulation</Kingdom>
+                            <Abstract>The function decrypt() in DeCryptUtil.java reveals system data or debug information by calling error() on line 47. The information revealed by error() could help an adversary form a plan of attack.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>DeCryptUtil.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/utils/DeCryptUtil.java</FilePath>
+<LineStart>47</LineStart>
+<Snippet>            return new String(decryptedText, StandardCharsets.UTF_8);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+          log.error("Error in decrypting the data", e);
+          throw new ServiceException(ResponseCodeEnum.ERROR_CODE_1212);
+        }</Snippet>
+<TargetFunction>org.slf4j.Logger.error()</TargetFunction>
+                            </Primary>
+                            <Source>
+<FileName>DeCryptUtil.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/utils/DeCryptUtil.java</FilePath>
+<LineStart>47</LineStart>
+<Snippet>            return new String(decryptedText, StandardCharsets.UTF_8);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+          log.error("Error in decrypting the data", e);
+          throw new ServiceException(ResponseCodeEnum.ERROR_CODE_1212);
+        }</Snippet>
+<TargetFunction>Read e()</TargetFunction>
+                            </Source>
+                        </Issue>
+                        <Issue iid="56B7574FA7272D07AA30333B31E30DD8" ruleID="B227CB65-6F20-4472-BBB7-13E157F32F6E">
+                            <Category>System Information Leak: Internal</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Encapsulation</Kingdom>
+                            <Abstract>The function createQRCode() in GoogleAuthenticatorUtil.java reveals system data or debug information by calling error() on line 162. The information revealed by error() could help an adversary form a plan of attack.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>GoogleAuthenticatorUtil.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/mfa/GoogleAuthenticatorUtil.java</FilePath>
+<LineStart>162</LineStart>
+<Snippet>            return Optional.of(base64);
+        } catch (WriterException | IOException e) {
+            log.error(e.getMessage(), e);
+            return Optional.empty();
+        }</Snippet>
+<TargetFunction>org.slf4j.Logger.error()</TargetFunction>
+                            </Primary>
+                            <Source>
+<FileName>GoogleAuthenticatorUtil.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/mfa/GoogleAuthenticatorUtil.java</FilePath>
+<LineStart>162</LineStart>
+<Snippet>            return Optional.of(base64);
+        } catch (WriterException | IOException e) {
+            log.error(e.getMessage(), e);
+            return Optional.empty();
+        }</Snippet>
+<TargetFunction>Read e()</TargetFunction>
+                            </Source>
+                        </Issue>
+                    </GroupingSection>
+                    <GroupingSection count="2">
+                        <groupTitle>J2EE Bad Practices: Threads</groupTitle>
+                        <MajorAttributeSummary>
+                            <MetaInfo>
+<Name>Abstract</Name>
+<Value>The method fileUploading() in ParameterValuesController.java calls run()  on line 58. Thread management in a web application is forbidden in some circumstances and is always highly error prone.</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Explanation</Name>
+<Value>Thread management in a web application is forbidden by the J2EE standard in some circumstances and is always highly error prone. Managing threads is difficult and is likely to interfere in unpredictable ways with the behavior of the application container. Even without interfering with the container, thread management usually leads to bugs that are hard to detect and diagnose like deadlock, race conditions, and other synchronization errors.</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Recommendations</Name>
+<Value>Avoid managing threads directly from within the web application. Instead use standards such as message driven beans and the EJB timer service that are provided by the application container.</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Tips</Name>
+<Value>1. If you are auditing a non-J2EE Java application, the J2EE Bad Practices categories might not apply to your environment. If this is the case, you can use Audit Guide to suppress these issues.</Value>
+                            </MetaInfo>
+                            <AttributeValue>
+<Name>&lt;Unaudited&gt;</Name>
+<Count>2</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Not an Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Reliability Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Bad Practice</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Suspicious</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Exploitable</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                        </MajorAttributeSummary>
+                        <Issue iid="12AE9188C49CF09C7F8C24640D1B7893" ruleID="8ECE1D9E-AE40-4AD1-9ECB-6D024DBF8FCA">
+                            <Category>J2EE Bad Practices: Threads</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Time and State</Kingdom>
+                            <Abstract>The method fileUploading() in ParameterValuesController.java calls start()  on line 68. Thread management in a web application is forbidden in some circumstances and is always highly error prone.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>ParameterValuesController.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/controller/ParameterValuesController.java</FilePath>
+<LineStart>68</LineStart>
+<Snippet>				this.ecoinventJobService.invokeEcoinventJob(fileName, bytesContent);
+			});
+    		newThread.start();
+        }catch (IOException e) {
+			log.error("some IO exception");</Snippet>
+<TargetFunction>start()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                        <Issue iid="67BCB4D295A2CF78BF0A7A155E05A9F6" ruleID="7DDCF7B6-5C23-48F5-A44A-B6A0E0643058">
+                            <Category>J2EE Bad Practices: Threads</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Time and State</Kingdom>
+                            <Abstract>The method fileUploading() in ParameterValuesController.java calls run()  on line 58. Thread management in a web application is forbidden in some circumstances and is always highly error prone.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>ParameterValuesController.java</FileName>
+<FilePath>src/main/java/com/example/exp/domain/platform/controller/ParameterValuesController.java</FilePath>
+<LineStart>58</LineStart>
+<Snippet>        	final byte[] bytesContent = IOUtils.toByteArray(is);
+        	
+			Thread newThread = new Thread(() -&gt; {
+
+				SecurityContext sc = SecurityContextHolder.getContext();</Snippet>
+<TargetFunction>run()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                    </GroupingSection>
+                    <GroupingSection count="1">
+                        <groupTitle>Build Misconfiguration: External Maven Dependency Repository</groupTitle>
+                        <MajorAttributeSummary>
+                            <MetaInfo>
+<Name>Abstract</Name>
+<Value>This maven build script relies on external sources, which could allow an attacker to insert malicious code into the final product or to take control of the build machine.</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Explanation</Name>
+<Value>Several tools exist within the Java development world to aid in dependency management: both Apache Ant and Apache Maven build systems include functionality specifically designed to help manage dependencies and Apache Ivy is developed explicitly as a dependency manager. Although there are differences in their behavior, these tools share the common functionality that they automatically download external dependencies specified in the build process at build time. This makes it much easier for developer B to build software in the same manner as developer A. Developers just store dependency information in the build file, which means that each developer and build engineer has a consistent way to obtain dependencies, compile the code, and deploy without the dependency management hassles involved in manual dependency management. The following examples illustrate how Ivy, Ant, and Maven can be used to manage external dependencies as part of a build process.
+
+Under Maven, instead of listing explicit URLs from which to retrieve the dependencies, developers specify the dependency names and versions and Maven relies on its underlying configuration to identify the server(s) from which to retrieve the dependencies. For commonly used components this saves the developer from having to researching dependency locations.
+
+Example 1: The following excerpt from a Maven pom.xml file shows how a developer can specify multiple external dependencies using their name and version:
+
+
+&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;commons-logging&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-logging&lt;/artifactId&gt;
+    &lt;version&gt;1.1&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;javax.jms&lt;/groupId&gt;
+    &lt;artifactId&gt;jms&lt;/artifactId&gt;
+    &lt;version&gt;1.1&lt;/version&gt;
+  &lt;/dependency&gt;
+  ...
+&lt;/dependencies&gt;
+
+
+Two distinct types of attack scenarios affect these systems: An attacker could either compromise the server hosting the dependency or compromise the DNS server the build machine uses to redirect requests for hostname of the server hosting the dependency to a machine controlled by the attacker. Both scenarios result in the attacker gaining the ability to inject a malicious version of a dependency into a build running on an otherwise uncompromised machine.
+
+Regardless of the attack vector used to deliver the Trojan dependency, these scenarios share the common element that the build system blindly accepts the malicious binary and includes it in the build. Because the build system has no recourse for rejecting the malicious binary and existing security mechanisms, such as code review, typically focus on internally-developed code rather than external dependencies, this type of attack has a strong potential to go unnoticed as it spreads through the development environment and potentially into production.
+
+Although there is some risk of a compromised dependency being introduced into a manual build process, by the tendency of automated build systems to retrieve the dependency from an external source each time the build system is run in a new environment greatly increases the window of opportunity for an attacker. An attacker need only compromise the dependency server or the DNS server during one of the many times the dependency is retrieved in order to compromise the machine on which the build is occurring.
+</Value>
+                            </MetaInfo>
+                            <MetaInfo>
+<Name>Recommendations</Name>
+<Value>The simplest solution is to refrain from adopting automated dependency management systems altogether. Managing dependencies manually eliminates the potential for unexpected behavior caused by the build system. Obviously, an attacker could still mount one of the attacks described previously to coincide with the manual retrieval of a dependency, but limiting the frequency with which the dependency must be retrieved significantly reduces the window of opportunity for an attacker. Finally, this solution forces the development organization to rely on what is ostensibly an antiquated build system. A system based on manual dependency management is often more difficult to use and maintain, and might be unacceptable in some software development environments.
+
+The second solution is a hybrid of the traditional manual dependency management approach and the fully automated solution that is popular today. The best advantage of the manual build process is the decreased window of attack, which can be achieved in a semi-automated system by replicating external dependency servers internally. Any build system that requires an external dependency can then point to the internal server using a hardcoded internal IP address to bypass the risk of DNS-based attacks. As new dependencies are added and new versions released, they can be downloaded once and included on the internal repository. This solution reduces the attack opportunities and enables the organization to leverage the existing internal network security infrastructure.
+
+To implement this solution using Maven, a project should have the IP address for an internal repository hard coded the pom.xml. Specifying the IP address in the pom.xml ensures the internal repository will be used by the corresponding build, but is tied to a specific project. Alternatively, the IP address can be specified in settings.xml, which makes the configuration easier to share across multiple projects.
+
+Example 2: The following Maven pom.xml demonstrates the use of an explicit internal IP address (the entries can also be used in settings.xml):
+
+
+&lt;project&gt;
+  ...
+  &lt;repositories&gt;
+    &lt;repository&gt;
+      &lt;releases&gt;
+        &lt;enabled&gt;true&lt;/enabled&gt;
+        &lt;updatePolicy&gt;always&lt;/updatePolicy&gt;
+        &lt;checksumPolicy&gt;warn&lt;/checksumPolicy&gt;
+      &lt;/releases&gt;
+      &lt;snapshots&gt;
+        &lt;enabled&gt;true&lt;/enabled&gt;
+        &lt;updatePolicy&gt;never&lt;/updatePolicy&gt;
+        &lt;checksumPolicy&gt;fail&lt;/checksumPolicy&gt;
+      &lt;/snapshots&gt;
+      &lt;id&gt;central&lt;/id&gt;
+      &lt;name&gt;Internal Repository&lt;/name&gt;
+      &lt;url&gt;http://172.16.1.13/maven2&lt;/url&gt;
+      &lt;layout&gt;default&lt;/layout&gt;
+    &lt;/repository&gt;
+  &lt;/repositories&gt;
+  &lt;pluginRepositories&gt;
+    ...
+  &lt;/pluginRepositories&gt;
+  ...
+&lt;/project&gt;
+
+</Value>
+                            </MetaInfo>
+                            <AttributeValue>
+<Name>&lt;Unaudited&gt;</Name>
+<Count>1</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Not an Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Reliability Issue</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Bad Practice</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Suspicious</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                            <AttributeValue>
+<Name>Exploitable</Name>
+<Count>0</Count>
+                            </AttributeValue>
+                        </MajorAttributeSummary>
+                        <Issue iid="87E3EC5CC8154C006783CC461A6DDEEB" ruleID="FF57412F-DD28-44DE-8F4F-0AD39620768C">
+                            <Category>Build Misconfiguration: External Maven Dependency Repository</Category>
+                            <Folder>Low</Folder>
+                            <Kingdom>Environment</Kingdom>
+                            <Abstract>This maven build script relies on external sources, which could allow an attacker to insert malicious code into the final product or to take control of the build machine.</Abstract>
+                            <Friority>Low</Friority>
+                            <Primary>
+<FileName>pom.xml</FileName>
+<FilePath>pom.xml</FilePath>
+<LineStart>3</LineStart>
+<Snippet>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+	&lt;groupId&gt;com.iisigroup.esg&lt;/groupId&gt;</Snippet>
+<TargetFunction>//project/repositories()</TargetFunction>
+                            </Primary>
+                        </Issue>
+                    </GroupingSection>
+                </Chart>
+            </IssueListing>
+        </SubSection>
+    </ReportSection>
+</ReportDefinition>
